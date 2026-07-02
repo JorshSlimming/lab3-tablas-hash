@@ -1,0 +1,6 @@
+# Data
+
+Colocar aqui datasets pequenos usados para pruebas.
+
+El dataset completo `auspol2019.csv` debe estar en la raiz del repositorio y
+no se versiona por su tamano.

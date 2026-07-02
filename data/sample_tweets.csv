@@ -1,0 +1,5 @@
+created_at,id,full_text,retweet_count,favorite_count,user_id,user_name,user_screen_name,user_description,user_location,user_created_at
+2019-05-20 09:13:44,1,"plain tweet",0,0,100,Alice,alice,"bio","Santiago, Chile",2010-01-01 00:00:00
+2019-05-20 09:13:45,2,"tweet, with comma",0,0,101,Bob,bob,"likes ""quotes""","Valparaiso, Chile",2011-01-01 00:00:00
+2019-05-20 09:13:46,3,"second alice tweet",0,0,100,Alice,alice,"bio","Santiago, Chile",2010-01-01 00:00:00
+2019-05-20 09:13:47,4,"third user",0,0,102,Carla,carla,"bio","Concepcion",2012-01-01 00:00:00

@@ -1,0 +1,13 @@
+build/
+.vs/
+.vscode/
+out/
+results/*.csv
+!results/README.md
+auspol2019.csv
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.user
+*.suo
