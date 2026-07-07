@@ -36,3 +36,16 @@ add_test(NAME hash_tests COMMAND hash_tests)
 set_tests_properties(hash_tests PROPERTIES
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+
+add_executable(experimentos_linear_quadratic_probing
+    hash_cerrado_linear_y_quadratic_probing/main.cpp
+    hash_cerrado_linear_y_quadratic_probing/tabla_hash.cpp
+    hash_cerrado_linear_y_quadratic_probing/load_dataset.cpp
+)
+
+target_include_directories(experimentos_linear_quadratic_probing
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/hash_cerrado_linear_y_quadratic_probing
+)
+
