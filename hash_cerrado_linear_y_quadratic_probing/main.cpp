@@ -3,14 +3,20 @@
 #include "load_dataset.h"
 #include "tabla_hash.h"
 #include <iostream>
+#include <filesystem>
 
 
 int main() {
 
-	int x;
 
-	std::cout << "prueba" <<std::endl; 
+	std::cout << "inicio" <<std::endl; 
 
-	std::cin >> x;
+	HashTable* tabla = new HashTable(101, Probing::LINEAR);
+
+	load_para_user_id(tabla);
+
+	std::cout << "fin" << std::endl;
+
+	return 0;
 
 }

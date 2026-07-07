@@ -12,30 +12,31 @@ enum State { EMPTY, OCCUPIED, DELETED };
 enum Probing { LINEAR,QUADRATIC };
 
 struct Entry {
-    int key;
-    string value;
+    string key;
+    int value;
     State state;
 
-    Entry() : key(0), value(""), state(EMPTY) {}
+    Entry() : key(""), value(0), state(EMPTY) {}
 };
 
 const float A = (sqrt(5) - 1) / 2;
 
-int h1(int k, int n);
+int h1(string k, int n);
 
-int h2(int k, int n);
 
 // Linear Probing
-int linear_probing(int k, int n, int i);
+int linear_probing(string k, int n, int i);
 
 // Quadratic Probing
-int quadratic_probing(int k, int n, int i);
+int quadratic_probing(string k, int n, int i);
 
 
 class HashTable {
 private:
     vector<Entry> table;
     int size;
+    //cantidad de elementos ocupados
+    int elements = 0;
 
 
     //va a almacenar el tipo de probing de la tabla
@@ -55,13 +56,24 @@ public:
 
     
   
-    int probe(int key, int i);
+    int probe(string key, int i);
 
-    void insert(int key, string value);
+    void insert(string key, int value);
 
-    string get(int key);
+    int get(string key);
 
-    void remove(int key);
+    void remove(string key);
+
+    Probing getProbing();
+    
+    bool is_prime(int n);
+
+    int next_prime(int n);
+
+    //resize para rehashing
+
+    void resize();
+
 
 };
 

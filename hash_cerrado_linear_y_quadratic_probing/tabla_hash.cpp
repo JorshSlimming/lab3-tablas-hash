@@ -1,28 +1,31 @@
 #include "tabla_hash.h"
 
-int h1(int k, int n) {
-    return k % n;
+//funcion hash para clave string, suma los valores numericos de los caracteres del string y luego aplica el modulo n
+
+int h1(string k, int n) {
+
+    unsigned long long hash = 0;
+
+    for (char c : k) {
+        hash = hash * 31 + c;
+    }
+
+    return hash % n;
 };
 
-int h2(int k, int n) {
-    float a = (float)k * A;
-    a -= (int)a;
-    return n * a;
-}
 
-
-int linear_probing(int k, int n, int i) {
+int linear_probing(string k, int n, int i) {
     return (h1(k, n) + i) % n;
 }
 
-int quadratic_probing(int k, int n, int i) {
+int quadratic_probing(string k, int n, int i) {
     return (h1(k, n) + i + 2 * i * i) % n;
 }
 
 
-//la funcion hash usada es la correspondiente al probing de la tabla
+//la tecnica de resolucion de colisiones es la correspondiente al probing de la tabla
 
-int HashTable::probe(int key, int i) {
+int HashTable::probe(string key, int i) {
 
     if (tipo_de_probing == Probing::LINEAR) {
 
@@ -34,7 +37,13 @@ int HashTable::probe(int key, int i) {
 
 }
 
-void HashTable::insert(int key, string value) {
+void HashTable::insert(string key, int value) {
+
+    // Si supera el factor de carga máximo
+    if ((float)(elements + 1) / size > 0.60) {
+        resize();
+    }
+
     for (int i = 0; i < size; i++) {
         int index = probe(key, i);
 
@@ -42,6 +51,9 @@ void HashTable::insert(int key, string value) {
             table[index].key = key;
             table[index].value = value;
             table[index].state = OCCUPIED;
+
+            elements++;
+
             return;
         }
 
@@ -55,7 +67,7 @@ void HashTable::insert(int key, string value) {
     cout << "Tabla llena, no se pudo insertar " << key << endl;
 }
 
-string HashTable::get(int key) {
+int HashTable::get(string key) {
     for (int i = 0; i < size; i++) {
         int index = probe(key, i);
         if (table[index].state == EMPTY) break; // ya no va a aparecer
@@ -64,10 +76,10 @@ string HashTable::get(int key) {
             return table[index].value;
         }
     }
-    return "No encontrado";
+    return 0;
 }
 
-void HashTable::remove(int key) {
+void HashTable::remove(string key) {
     for (int i = 0; i < size; i++) {
         int index = probe(key, i);
 
@@ -75,9 +87,70 @@ void HashTable::remove(int key) {
 
         if (table[index].state == OCCUPIED && table[index].key == key) {
             table[index].state = DELETED;
+            elements--;
             return;
         }
     }
+}
+
+
+Probing HashTable::getProbing(){
+
+    return tipo_de_probing;
+}
+
+bool HashTable::is_prime(int n){
+    if (n <= 1)
+        return false;
+
+    if (n == 2)
+        return true;
+
+    if (n % 2 == 0)
+        return false;
+
+    for (int i = 3; i * i <= n; i += 2) {
+        if (n % i == 0)
+            return false;
+    }
+
+    return true;
+
+}
+
+int HashTable::next_prime(int n){
+
+    while (!is_prime(n)) {
+        n++;
+    }
+
+    return n;
+}
+
+void HashTable::resize(){
+
+    int oldSize = size;
+
+    // Nueva capacidad: siguiente primo después de duplicar
+    int newSize = next_prime(size * 2);
+
+    vector<Entry> oldTable = table;
+
+    // Crear nueva tabla vacía
+    table.clear();
+    table.resize(newSize);
+
+    size = newSize;
+    elements = 0;
+
+    // Reinsertar todos los elementos
+    for (int i = 0; i < oldSize; i++) {
+
+        if (oldTable[i].state == OCCUPIED) {
+            insert(oldTable[i].key, oldTable[i].value);
+        }
+    }
+
 }
 
 

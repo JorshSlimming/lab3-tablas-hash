@@ -7,12 +7,11 @@
 
 
 
-//carga el dataset en una estructura HashTable con linear probing , la cual es retornada 
+//carga el dataset en una estructura HashTable usando user_id como clave
 
-HashTable load_en_linear_probing();
+void load_para_user_id(HashTable* tabla_hash);
 
+//carga el dataset en una estructura HashTableusando user_screen_name como clave
 
-//carga el dataset en una estructura HashTable con quadratic probing, la cual es retornada
-
-HashTable load_en_quadratic_probing();
+void load_para_user_screen_name(HashTable* tabla_hash);
 
