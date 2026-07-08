@@ -13,7 +13,7 @@ int main() {
 
 	HashTable* tabla = new HashTable(101, Probing::LINEAR);
 
-	load_para_user_id(tabla);
+	load_dataset(tabla, 10.000, Clave::USER_ID);
 
 	std::cout << "fin" << std::endl;
 

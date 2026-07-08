@@ -6,12 +6,18 @@
 #include "tabla_hash.h"
 
 
+//claves de un tweet
 
-//carga el dataset en una estructura HashTable usando user_id como clave
+enum Clave { USER_ID, USER_SCREEN_NAME };
 
-void load_para_user_id(HashTable* tabla_hash);
 
-//carga el dataset en una estructura HashTableusando user_screen_name como clave
+//el metodo carga el dataset en una estructura HashTable dado un puntero a ella usando
 
-void load_para_user_screen_name(HashTable* tabla_hash);
+//limite_de_tweets: indica cuantos tweets se leeran, cargaran y contaran, tras superar esa cantidad 
+//el metodo terminara su ejecucion
+
+//clave: el id de los registros del dataset que se utilizara como clave en la tabla, ya sea user_id o user_screen_name
+
+void load_dataset(HashTable* tabla_hash,int limite_de_tweets, Clave clave);
+
 

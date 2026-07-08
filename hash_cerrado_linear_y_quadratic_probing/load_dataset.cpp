@@ -2,10 +2,9 @@
 
 
 
-void load_para_user_id(HashTable* tabla_hash) {
+void load_dataset(HashTable* tabla_hash, int limite_de_tweets, Clave clave) {
 
 
-   
     std::ifstream file("../../auspol2019.csv");
 
     if (!file.is_open()) {
@@ -28,22 +27,57 @@ void load_para_user_id(HashTable* tabla_hash) {
 
     std::getline(file, linea);
 
+    //el numero de la coma que esta antes del id
+
+    int numero_coma_antes;
+
+    //el numero de la coma que esta despues del id
+
+    int numero_coma_despues;
+
+
+    //si la clave es user_id este estara entre las comas 5 y 6 del registro, si es user_screen_name este estara entre las comas 7 y 8 del
+    //registro
+
+    if (clave == Clave::USER_ID) {
+
+        numero_coma_antes = 5;
+        numero_coma_despues = 6;
+    }
+
+    else if (clave == Clave::USER_SCREEN_NAME) {
+
+        numero_coma_antes = 7;
+        numero_coma_despues = 8;
+    }
+
+
+    //contador general de tweets leidos 
+
+    int contador_de_tweets = 0;
+
+    //contador de comas del registro que se reinicia a 0 al llegar a 10
+
     int contador_de_comas_por_registro = 0;
 
-    //variables que serviran para saber si se esta entre la 5ta coma y 6ta coma de un registro que es donde esta el user_id
+    //variables que serviran para saber si se esta entre las comas que encierran el id del
 
-    bool quinta_coma_encontrada = false;
+    //coma antes del id
 
-    bool sexta_coma_encontrada = false;
+    bool coma_antes_encontrada = false;
+
+    //coma despues del id
+
+    bool coma_despues_encontrada = false;
 
     //sera true cuando se encuentre ',' seguido de " , lo que significa que se entro a un campo de texto, por lo cual las comas
     //dentro no cuentan como separadores de columnas
 
     bool dentro_de_comillas = false;
 
-    //almacena el ultimo user_id encontrado
+    //variable que permite concatenar y almacenar el id del registro actual
 
-    string user_id = "";
+    string id = "";
 
     while (std::getline(file, linea)) {
 
@@ -79,56 +113,68 @@ void load_para_user_id(HashTable* tabla_hash) {
             }
 
 
-            //se le concatenan a user_id los caracteres entre la 5ta y 6ta coma
+            //se le concatenan al string id los caracteres entre coma antes del id y la coma despues del id
 
-            if (quinta_coma_encontrada && !sexta_coma_encontrada && linea[i] != ',') {
+            if (coma_antes_encontrada && !coma_despues_encontrada && linea[i] != ',') {
 
-                user_id += linea[i];
-
-            }
-
-
-            if (contador_de_comas_por_registro == 5) {
-
-                quinta_coma_encontrada = true;
+                id += linea[i];
 
             }
 
-            if (contador_de_comas_por_registro == 6) {
 
-                sexta_coma_encontrada = true;
+            if (contador_de_comas_por_registro == numero_coma_antes) {
 
-                quinta_coma_encontrada = false;
-
-
-                //se inserta el elemento a la tabla con valor= valor_actual + 1 (la cantidad de tweets del usuario con ese user_id)
-
-                tabla_hash->insert(user_id, tabla_hash->get(user_id)+1);
-
-                //se vacia user_id 
-
-                user_id.clear();
+                coma_antes_encontrada = true;
 
             }
 
-            //si se encontro la decima coma se termino el registro y por ende se reinician las variables
+            if (contador_de_comas_por_registro == numero_coma_despues) {
+
+                coma_despues_encontrada = true;
+
+                coma_antes_encontrada = false;
+
+
+                //se inserta el elemento a la tabla con valor= valor_actual + 1 (la cantidad de tweets del usuario con ese id)
+
+                tabla_hash->insert(id, tabla_hash->get(id)+1);
+
+                //la variable que almacena el id se vacia 
+
+                id.clear();
+
+            }
+
+            //si se encontro la decima coma se termino el registro y por ende se reinician las variables, se cuenta un tweet
 
             if (contador_de_comas_por_registro == 10) {
 
                 contador_de_comas_por_registro = 0;
 
-                quinta_coma_encontrada = false;
+                coma_antes_encontrada = false;
 
-                sexta_coma_encontrada = false;
+                coma_despues_encontrada = false;
 
-            }
-  
+                contador_de_tweets++;
+
+                //si se llega a la cantidad de tweets pedidos se cierra el archivo y termina el metodo
+
+                if (contador_de_tweets >= limite_de_tweets) {
+
+                    file.close();
+
+                    return;
+
+                }
+
+            }  
 
         }
         
 
     }
 
+    //se cierra el archivo
 
     file.close();
 

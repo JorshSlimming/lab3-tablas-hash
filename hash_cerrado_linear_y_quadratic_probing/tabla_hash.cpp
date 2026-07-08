@@ -131,12 +131,12 @@ void HashTable::resize(){
 
     int oldSize = size;
 
-    // Nueva capacidad: siguiente primo después de duplicar
+    // Nueva capacidad: siguiente primo despues de duplicar
     int newSize = next_prime(size * 2);
 
     vector<Entry> oldTable = table;
 
-    // Crear nueva tabla vacía
+    // Crear nueva tabla vacia
     table.clear();
     table.resize(newSize);
 
