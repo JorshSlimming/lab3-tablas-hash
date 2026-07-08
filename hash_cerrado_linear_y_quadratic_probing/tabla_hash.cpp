@@ -153,6 +153,26 @@ void HashTable::resize(){
 
 }
 
+size_t HashTable::memory_usage() const {
+
+    size_t memoria = 0;
+
+    // tabaño del objeto hashtable en si
+    memoria += sizeof(*this);
+
+    // memoria reservada por el vector
+    memoria += table.capacity() * sizeof(Entry);
+
+    // memoria usada por los strings dentro de Entry
+    for (const Entry& entrada : table) {
+
+        memoria += entrada.key.capacity();
+
+    }
+
+    return memoria;
+}
+
 
 
 

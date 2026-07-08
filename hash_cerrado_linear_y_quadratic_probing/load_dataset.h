@@ -4,20 +4,21 @@
 #include <fstream>
 #include <iostream>
 #include "tabla_hash.h"
-
+#include <chrono>
 
 //claves de un tweet
 
 enum Clave { USER_ID, USER_SCREEN_NAME };
 
 
-//el metodo carga el dataset en una estructura HashTable dado un puntero a ella usando
+//el metodo carga el dataset en una estructura HashTable dado un puntero a ella, devuelve la suma de los tiempos que toma la insercion
+//de los elementos en la tabla, sin contar el tiempo del parsing del dataset
 
 //limite_de_tweets: indica cuantos tweets se leeran, cargaran y contaran, tras superar esa cantidad 
 //el metodo terminara su ejecucion
 
 //clave: el id de los registros del dataset que se utilizara como clave en la tabla, ya sea user_id o user_screen_name
 
-void load_dataset(HashTable* tabla_hash,int limite_de_tweets, Clave clave);
+double load_dataset(HashTable* tabla_hash,int limite_de_tweets, Clave clave);
 
 

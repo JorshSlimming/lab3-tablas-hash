@@ -2,7 +2,7 @@
 
 
 
-void load_dataset(HashTable* tabla_hash, int limite_de_tweets, Clave clave) {
+double load_dataset(HashTable* tabla_hash, int limite_de_tweets, Clave clave) {
 
 
     std::ifstream file("../../auspol2019.csv");
@@ -15,11 +15,16 @@ void load_dataset(HashTable* tabla_hash, int limite_de_tweets, Clave clave) {
 
         //falta aun cambiar el retorno
 
-        return;
+        return 0.0;
 
     }
 
-    std::cout << "archivo auspol2019 abierto con exito" << std::endl;
+    //std::cout << "archivo auspol2019 abierto con exito" << std::endl;
+
+    //tiempo total
+
+    double tiempo = 0;
+
 
     std::string linea;
 
@@ -135,9 +140,18 @@ void load_dataset(HashTable* tabla_hash, int limite_de_tweets, Clave clave) {
                 coma_antes_encontrada = false;
 
 
+               
                 //se inserta el elemento a la tabla con valor= valor_actual + 1 (la cantidad de tweets del usuario con ese id)
-
+               
+                auto inicio = std::chrono::high_resolution_clock::now();
+    
                 tabla_hash->insert(id, tabla_hash->get(id)+1);
+
+                auto fin = std::chrono::high_resolution_clock::now();
+
+                double tiempo_insercion = std::chrono::duration<double, std::micro>(fin - inicio).count();
+
+                tiempo += tiempo_insercion;
 
                 //la variable que almacena el id se vacia 
 
@@ -163,7 +177,7 @@ void load_dataset(HashTable* tabla_hash, int limite_de_tweets, Clave clave) {
 
                     file.close();
 
-                    return;
+                    return tiempo;
 
                 }
 
@@ -178,5 +192,6 @@ void load_dataset(HashTable* tabla_hash, int limite_de_tweets, Clave clave) {
 
     file.close();
 
+    return tiempo;
 
 }

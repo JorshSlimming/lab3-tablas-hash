@@ -45,6 +45,7 @@ private:
 
 public:
 
+
     //el tipo de probing de la tabla se define desde el constructor
 
     HashTable(int tableSize, Probing probing ) : size(tableSize) {
@@ -74,6 +75,9 @@ public:
 
     void resize();
 
+    //para obtener el peso de la tabla
+
+    size_t memory_usage() const;
 
 };
 
