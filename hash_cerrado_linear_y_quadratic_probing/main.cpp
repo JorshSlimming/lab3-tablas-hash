@@ -22,6 +22,9 @@ void quadratic_probing_user_id();
 void quadratic_probing_user_screen_name();
 
 
+//MAIN
+
+
 int main() {
 
     std::cout << "inicio" << std::endl;
@@ -35,6 +38,10 @@ int main() {
     quadratic_probing_user_screen_name();
 
 	std::cout << "fin" << std::endl;
+
+    std::cout << "presione enter para salir...";
+
+    std::cin.get();
 
 	return 0;
 
