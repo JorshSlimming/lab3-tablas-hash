@@ -37,6 +37,32 @@ set_tests_properties(hash_tests PROPERTIES
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+add_executable(double_hash_tests
+    tests/double_hash_tests.cpp
+)
+target_link_libraries(double_hash_tests PRIVATE hash_core)
+add_test(NAME double_hash_tests COMMAND double_hash_tests)
+set_tests_properties(double_hash_tests PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_executable(unordered_map_adapter_tests
+    tests/unordered_map_adapter_tests.cpp
+)
+target_link_libraries(unordered_map_adapter_tests PRIVATE hash_core)
+add_test(NAME unordered_map_adapter_tests COMMAND unordered_map_adapter_tests)
+set_tests_properties(unordered_map_adapter_tests PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_executable(benchmark_tests
+    tests/benchmark_tests.cpp
+)
+target_link_libraries(benchmark_tests PRIVATE hash_core)
+add_test(NAME benchmark_tests COMMAND benchmark_tests)
+set_tests_properties(benchmark_tests PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 add_executable(experimentos_linear_quadratic_probing
     hash_cerrado_linear_y_quadratic_probing/main.cpp
@@ -48,4 +74,3 @@ target_include_directories(experimentos_linear_quadratic_probing
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/hash_cerrado_linear_y_quadratic_probing
 )
-

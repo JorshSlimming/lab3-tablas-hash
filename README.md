@@ -33,7 +33,12 @@ docs/                Enunciado y organizacion
 ```
 
 El CSV grande `auspol2019.csv` debe estar en la raiz del repositorio para
-ejecutar benchmarks locales. No se versiona por su tamano.
+ejecutar benchmarks locales. **No se incluye en este repositorio** y debe
+descargarse manualmente desde Kaggle:
+
+- https://www.kaggle.com/datasets/taniaj/australian-election-2019-tweets?select=auspol2019.csv
+
+Una vez descargado, copiar `auspol2019.csv` a la raiz del proyecto.
 
 ## Compilar
 
@@ -54,15 +59,30 @@ Tambien se puede ejecutar directamente:
 .\build\Debug\hash_tests.exe
 ```
 
-## Ejecutar benchmark base
+## Ejecutar benchmark directo
 
-El ejecutable actual mide la tabla con hashing abierto (`chaining`) para las
-dos claves. Los roles siguientes deben conectar las demas estructuras al mismo
-formato de salida.
+El ejecutable `hash_benchmark` actual mide las tres estructuras implementadas
+en este repositorio para ambas claves:
+
+- `chaining`
+- `double_hashing`
+- `unordered_map`
 
 ```powershell
-.\build\Debug\hash_benchmark.exe auspol2019.csv results\chaining_results.csv
+.\build\Debug\hash_benchmark.exe auspol2019.csv results\benchmark_results.csv
 ```
+
+## Ejecutar benchmark completo (Rol C)
+
+El Rol C agrega double hashing, el adaptador `std::unordered_map`, y un runner
+que mide las tres estructuras en un solo CSV.
+
+```bash
+./scripts/run_role_c_benchmark.sh
+```
+
+Requiere `auspol2019.csv` en la raiz del repositorio (no versionado).
+El script respalda resultados previos y falla claramente si falta el dataset.
 
 Formato del CSV:
 

@@ -6,7 +6,7 @@ Benjamin
 
 ## Estado
 
-Pendiente.
+Completado. Benchmark final ejecutado y resultados guardados en `results/role_c_benchmark.csv`.
 
 ## Objetivo del rol
 
@@ -80,6 +80,13 @@ El runner final debe ejecutar todas las configuraciones:
 - double hashing;
 - `std::unordered_map`.
 
+> Nota de integracion del equipo: por acuerdo operativo, este rol deja listo el
+> runner comun y ejecuta directamente las estructuras bajo este ownership
+> (`chaining`, `double hashing`, `unordered_map`). `linear probing` y
+> `quadratic probing` quedaron en una carpeta e interfaz mantenidas por otro
+> integrante, por lo que sus resultados deben correrse/guardarse por separado y
+> luego unirse en el analisis final del grupo.
+
 Y para ambos tipos de clave:
 
 - `user_id`;
@@ -143,3 +150,38 @@ El rol se considera terminado cuando:
 - los resultados se guardan con el formato acordado;
 - se puede usar el CSV final para generar tablas, promedios, desviacion
   estandar y graficos del informe.
+
+## Listo para ejecutar
+
+El codigo, las pruebas y el runner quedaron completos. El benchmark final ya se
+ejecuto con `auspol2019.csv` y dejo el CSV en `results/role_c_benchmark.csv`.
+
+Para repetir la corrida:
+
+```bash
+# Ejecutar benchmark completo
+./scripts/run_role_c_benchmark.sh
+```
+
+El script:
+
+- falla claramente si `auspol2019.csv` no existe;
+- compila el benchmark si es necesario;
+- respalda resultados previos antes de sobrescribir;
+- escribe en `results/role_c_benchmark.csv`.
+
+### Estructuras medidas
+
+| Estructura | Estrategia | Archivo |
+|---|---|---|
+| ChainingHashTable | chaining | `include/chaining/chaining_hash_table.hpp` |
+| DoubleHashTable | double_hashing | `include/closed/double_hash_table.hpp` |
+| UnorderedMapAdapter | unordered_map | `include/stl/unordered_map_adapter.hpp` |
+
+### Cobertura de pruebas
+
+| Archivo | Pruebas |
+|---|---|
+| `tests/hash_tests.cpp` | Chaining, parser CSV, hashes |
+| `tests/double_hash_tests.cpp` | Double hashing: colisiones, rehash, clear, memoria |
+| `tests/unordered_map_adapter_tests.cpp` | Adaptador: incremento, clear, capacity, memoria |
