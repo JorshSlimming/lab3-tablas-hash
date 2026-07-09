@@ -13,10 +13,15 @@
 
 namespace lab3 {
 
-template <typename Key, typename Hash = PrimaryHash<Key>>
-class DoubleHashTable {
+enum class ProbeStrategy {
+    Linear,
+    Quadratic,
+};
+
+template <typename Key, ProbeStrategy Strategy, typename Hash = PrimaryHash<Key>>
+class ProbingHashTable {
 public:
-    explicit DoubleHashTable(
+    explicit ProbingHashTable(
         std::size_t initial_capacity = config::kInitialCapacity,
         double max_load_factor = config::kMaxLoadFactor)
         : slots_(next_prime(initial_capacity)),
@@ -27,7 +32,7 @@ public:
     }
 
     void increment(const Key& key) {
-        std::size_t idx;
+        std::size_t idx = 0;
         if (find_existing(key, idx)) {
             ++slots_[idx].count;
             return;
@@ -37,32 +42,24 @@ public:
             rehash(next_prime(capacity() * 2));
         }
 
-        std::size_t h1 = hash_(key) % capacity();
-        std::size_t step = double_hash_step(key, capacity());
-
-        for (std::size_t i = 0; i < capacity(); ++i) {
-            std::size_t probe = (h1 + i * step) % capacity();
-            if (!slots_[probe].occupied) {
-                slots_[probe].key = key;
-                slots_[probe].count = 1;
-                slots_[probe].occupied = true;
-                ++unique_count_;
-                return;
-            }
+        if (insert_new(key, 1)) {
+            return;
         }
 
 
         rehash(next_prime(capacity() * 2));
-        increment(key);
+        if (!insert_new(key, 1)) {
+            throw std::runtime_error("could not insert key after rehash");
+        }
     }
 
     bool contains(const Key& key) const {
-        std::size_t ignored;
+        std::size_t ignored = 0;
         return find_existing(key, ignored);
     }
 
     bool get(const Key& key, TweetCount& count) const {
-        std::size_t idx;
+        std::size_t idx = 0;
         if (!find_existing(key, idx)) {
             return false;
         }
@@ -98,8 +95,7 @@ public:
 
     void clear() {
         for (Slot& slot : slots_) {
-            slot.occupied = false;
-            slot.count = 0;
+            slot = Slot{};
         }
         unique_count_ = 0;
     }
@@ -116,16 +112,24 @@ private:
     double max_load_factor_ = config::kMaxLoadFactor;
     Hash hash_;
 
-    bool find_existing(const Key& key, std::size_t& out_idx) const {
-        std::size_t h1 = hash_(key) % capacity();
-        std::size_t step = double_hash_step(key, capacity());
+    std::size_t probe_index(const Key& key, std::size_t i) const {
+        const std::size_t h = hash_(key) % capacity();
+        if constexpr (Strategy == ProbeStrategy::Linear) {
+            return (h + i) % capacity();
+        } else {
 
+            return (h + i + 2 * i * i) % capacity();
+        }
+    }
+
+    bool find_existing(const Key& key, std::size_t& out_idx) const {
         for (std::size_t i = 0; i < capacity(); ++i) {
-            std::size_t probe = (h1 + i * step) % capacity();
-            if (!slots_[probe].occupied) {
+            const std::size_t probe = probe_index(key, i);
+            const Slot& slot = slots_[probe];
+            if (!slot.occupied) {
                 return false;
             }
-            if (slots_[probe].key == key) {
+            if (slot.key == key) {
                 out_idx = probe;
                 return true;
             }
@@ -138,6 +142,21 @@ private:
                max_load_factor_;
     }
 
+    bool insert_new(const Key& key, TweetCount count) {
+        for (std::size_t i = 0; i < capacity(); ++i) {
+            const std::size_t probe = probe_index(key, i);
+            Slot& slot = slots_[probe];
+            if (!slot.occupied) {
+                slot.key = key;
+                slot.count = count;
+                slot.occupied = true;
+                ++unique_count_;
+                return true;
+            }
+        }
+        return false;
+    }
+
     void rehash(std::size_t new_cap) {
         std::vector<Slot> old_slots = std::move(slots_);
         slots_.assign(next_prime(new_cap), Slot{});
@@ -147,18 +166,8 @@ private:
             if (!slot.occupied) {
                 continue;
             }
-            std::size_t h1 = hash_(slot.key) % capacity();
-            std::size_t step = double_hash_step(slot.key, capacity());
-
-            for (std::size_t i = 0; i < capacity(); ++i) {
-                std::size_t probe = (h1 + i * step) % capacity();
-                if (!slots_[probe].occupied) {
-                    slots_[probe].key = slot.key;
-                    slots_[probe].count = slot.count;
-                    slots_[probe].occupied = true;
-                    ++unique_count_;
-                    break;
-                }
+            if (!insert_new(slot.key, slot.count)) {
+                throw std::runtime_error("could not reinsert key during probing rehash");
             }
         }
     }

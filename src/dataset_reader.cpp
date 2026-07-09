@@ -38,7 +38,7 @@ bool read_csv_record(std::istream& input, std::string& record) {
     return true;
 }
 
-}  // namespace
+}
 
 std::vector<std::string> parse_csv_line(const std::string& line) {
     std::vector<std::string> fields;
@@ -124,4 +124,4 @@ TweetKeys read_tweet_keys_csv(const std::string& path, std::size_t limit) {
     return keys;
 }
 
-}  // namespace lab3
+}

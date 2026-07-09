@@ -64,13 +64,13 @@ void test_adapter_memory_estimate_nontrivial() {
     table.increment("a_long_enough_string_to_allocate");
     table.increment("another_allocated_string_here");
 
-    // Should include bucket array, nodes, and dynamic string memory
+
     assert(table.memory_bytes() > sizeof(table));
     assert(table.memory_bytes() >
            sizeof(lab3::UnorderedMapAdapter<lab3::UserScreenName>));
 }
 
-}  // namespace
+}
 
 int main() {
     test_adapter_increment_contract();

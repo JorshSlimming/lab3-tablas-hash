@@ -22,7 +22,7 @@ void quadratic_probing_user_id();
 void quadratic_probing_user_screen_name();
 
 
-//MAIN
+
 
 
 int main() {
@@ -67,11 +67,11 @@ double desviacion_estandar_muestral(double suma, const std::vector<double>& dato
 
 void linear_probing_user_id() {
 
-    //para cada una de las 4 cantidades de tweets definidas en el arreglo
+
 
     for (int i=0 ; i < 4;i++) {
 
-        //almacena los tiempos de cada una de las 20 iteraciones
+
 
         std::vector<double> tiempos;
 
@@ -81,15 +81,15 @@ void linear_probing_user_id() {
 
         double peso = 0;
 
-        //20 iteraciones para sacar media y desviacion estandar
-        
+
+
         for (int j = 0; j< 20;j++) {
 
-            //tabla vacia
+
 
             HashTable* tabla = new HashTable(101, Probing::LINEAR);
 
-            //se carga el dataset, se añade el tiempo del insert interno a la suma y se inserta en el vector
+
 
             double tiempo = load_dataset(tabla, cant_tweets[i], Clave::USER_ID);
 
@@ -102,8 +102,8 @@ void linear_probing_user_id() {
                 peso = tabla->memory_usage();
 
             }
-            
-            //se libera la memoria
+
+
             delete tabla;
         }
 
@@ -113,7 +113,7 @@ void linear_probing_user_id() {
         std::cout << "linear probing, clave: user_id , tamanio: " << cant_tweets[i] << "\n" << std::endl;
 
         for (int k = 0; k < 20;k++) {
-        
+
             std::cout << "tiempo iteracion " << k+1 << " : " << tiempos[k] <<std::endl;
 
         }
@@ -123,18 +123,18 @@ void linear_probing_user_id() {
         std::cout << "desviacion estandar muestral: " << desviacion_estandar_muestral(suma, tiempos)<< std::endl;
 
         std::cout << "peso de la estructura: " << peso << "\n" << std::endl;
-        
-       
+
+
     }
 }
 
 void linear_probing_user_screen_name() {
 
-    //para cada una de las 4 cantidades de tweets definidas en el arreglo
+
 
     for (int i = 0; i < 4;i++) {
 
-        //almacena los tiempos de cada una de las 20 iteraciones
+
 
         std::vector<double> tiempos;
 
@@ -144,15 +144,15 @@ void linear_probing_user_screen_name() {
 
         double peso = 0;
 
-        //20 iteraciones para sacar media y desviacion estandar
+
 
         for (int j = 0; j < 20;j++) {
 
-            //tabla vacia
+
 
             HashTable* tabla = new HashTable(101, Probing::LINEAR);
 
-            //se carga el dataset, se añade el tiempo del insert interno a la suma y se inserta en el vector
+
 
             double tiempo = load_dataset(tabla, cant_tweets[i], Clave::USER_SCREEN_NAME);
 
@@ -166,7 +166,7 @@ void linear_probing_user_screen_name() {
 
             }
 
-            //se libera la memoria
+
             delete tabla;
         }
 
@@ -194,11 +194,11 @@ void linear_probing_user_screen_name() {
 
 void quadratic_probing_user_id() {
 
-    //para cada una de las 4 cantidades de tweets definidas en el arreglo
+
 
     for (int i = 0; i < 4;i++) {
 
-        //almacena los tiempos de cada una de las 20 iteraciones
+
 
         std::vector<double> tiempos;
 
@@ -208,15 +208,15 @@ void quadratic_probing_user_id() {
 
         double peso = 0;
 
-        //20 iteraciones para sacar media y desviacion estandar
+
 
         for (int j = 0; j < 20;j++) {
 
-            //tabla vacia
+
 
             HashTable* tabla = new HashTable(101, Probing::QUADRATIC);
 
-            //se carga el dataset, se añade el tiempo del insert interno a la suma y se inserta en el vector
+
 
             double tiempo = load_dataset(tabla, cant_tweets[i], Clave::USER_ID);
 
@@ -230,7 +230,7 @@ void quadratic_probing_user_id() {
 
             }
 
-            //se libera la memoria
+
             delete tabla;
         }
 
@@ -258,11 +258,11 @@ void quadratic_probing_user_id() {
 
 void quadratic_probing_user_screen_name() {
 
-    //para cada una de las 4 cantidades de tweets definidas en el arreglo
+
 
     for (int i = 0; i < 4;i++) {
 
-        //almacena los tiempos de cada una de las 20 iteraciones
+
 
         std::vector<double> tiempos;
 
@@ -272,15 +272,15 @@ void quadratic_probing_user_screen_name() {
 
         double peso = 0;
 
-        //20 iteraciones para sacar media y desviacion estandar
+
 
         for (int j = 0; j < 20;j++) {
 
-            //tabla vacia
+
 
             HashTable* tabla = new HashTable(101, Probing::QUADRATIC);
 
-            //se carga el dataset, se añade el tiempo del insert interno a la suma y se inserta en el vector
+
 
             double tiempo = load_dataset(tabla, cant_tweets[i], Clave::USER_SCREEN_NAME);
 
@@ -294,7 +294,7 @@ void quadratic_probing_user_screen_name() {
 
             }
 
-            //se libera la memoria
+
             delete tabla;
         }
 

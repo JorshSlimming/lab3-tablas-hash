@@ -1,34 +1,40 @@
-# Results
+# Resultados experimentales
 
-Los CSV crudos y resumidos de benchmarks se guardan aqui.
+Los CSV crudos y resumidos de la experimentación se guardan en este directorio.
 
-Formato base:
+Formato del CSV crudo:
 
 ```text
 run;key_type;structure;strategy;n_tweets;unique_users;time_us;memory_bytes;capacity
 ```
 
-## Regla: no sobrescribir sin respaldo
+Formato del CSV resumen:
 
-Antes de regenerar un CSV final, el runner debe respaldar el archivo existente.
-El script `scripts/run_role_c_benchmark.sh` sigue esta regla automaticamente,
-creando copias con sufijo `.bak.YYYYMMDDHHMMSS`.
+```text
+key_type;structure;strategy;n_tweets;runs;unique_users;time_us_mean;time_us_stdev;memory_bytes_mean;capacity_mean
+```
 
-## Archivos generados por Rol C
+## Archivos esperados
 
 | Archivo | Contenido |
 |---|---|
-| `role_c_benchmark.csv` | Benchmark combinado de chaining, double hashing y unordered_map para ambos tipos de clave |
+| `benchmark_results.csv` | Mediciones crudas de encadenamiento, exploración lineal, exploración cuadrática, doble hashing y `unordered_map` para `user_id` y `user_screen_name` |
+| `benchmark_summary.csv` | Promedios y desviaciones estándar derivados del CSV crudo |
 
-Estado actual del repositorio:
+## Regla: no sobrescribir sin respaldo
 
-- `role_c_benchmark.csv` ya fue generado con el dataset `auspol2019.csv`.
-- `auspol2019.csv` permanece fuera de versionado y debe descargarse localmente.
+Antes de regenerar un CSV final, el script `scripts/run_full_benchmark.sh` respalda el archivo existente con sufijo `.bak.YYYYMMDDHHMMSS`.
 
-Para regenerarlo:
+## Regenerar resultados
+
+Con `auspol2019.csv` en la raiz del repositorio:
 
 ```bash
-./scripts/run_role_c_benchmark.sh
+./scripts/run_full_benchmark.sh
 ```
 
-Requiere `auspol2019.csv` en la raiz del repositorio (no versionado).
+También se puede especificar la ruta del dataset:
+
+```bash
+./scripts/run_full_benchmark.sh /ruta/a/auspol2019.csv results/benchmark_results.csv
+```

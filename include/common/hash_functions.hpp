@@ -71,4 +71,4 @@ inline std::size_t double_hash_step(const Key& key, std::size_t capacity) {
     return 1 + (SecondaryHash<Key>{}(key) % (capacity - 1));
 }
 
-}  // namespace lab3
+}

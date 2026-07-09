@@ -49,24 +49,24 @@ public:
     ~priorityQueue() {
       heap.clear();
     }
-    
+
     void insert(int value) {
-        //Se ingresa un elemento  luego se llama a heapUp para reajustar la cola de prioridad
+
         heap.push_back(value);
         heapUp(heap.size() - 1);
     }
 
     int getPriority() {
-        //se retorna la raiz
+
         return heap[0];
     }
 
     int extractPriority() {
-        //se intercambia la raiz con el ultimo elemento y se elimina el ultimo elemento
+
         int priority = heap[0];
         heap[0] = heap[heap.size() - 1];
         heap.pop_back();
-        //Luego se llama hepDown para reajustar la cola de prioridad
+
         heapDown(0);
         return priority;
     }

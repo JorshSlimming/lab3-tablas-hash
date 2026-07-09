@@ -1,6 +1,5 @@
-# STL adapter
+# Adaptador de `std::unordered_map`
 
-Espacio reservado para el adaptador de `std::unordered_map`.
+Este directorio contiene el adaptador que permite comparar `std::unordered_map` con las implementaciones propias.
 
-El adaptador debe exponer la misma interfaz publica que las demas tablas para
-que el runner experimental pueda comparar todas las estructuras.
+El adaptador expone la misma interfaz pública que las demás tablas para que la comparación experimental sea uniforme.

@@ -1,10 +1,9 @@
-# Closed hashing
+# Hashing cerrado
 
-Espacio reservado para las implementaciones de hashing cerrado:
+Implementaciones de hashing cerrado incluidas en la experimentación principal:
 
-- linear probing
-- quadratic probing
-- double hashing
+- `ProbingHashTable<Key, ProbeStrategy::Linear>` para exploración lineal.
+- `ProbingHashTable<Key, ProbeStrategy::Quadratic>` para exploración cuadrática.
+- `DoubleHashTable<Key>` para doble hashing.
 
-Todas deben respetar el contrato documentado en
-`include/common/hash_table_contract.md`.
+Todas respetan el contrato documentado en `include/common/hash_table_contract.md`.

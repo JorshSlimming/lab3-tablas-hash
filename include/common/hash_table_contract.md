@@ -1,6 +1,6 @@
-# Hash table contract
+# Interfaz común de tablas hash
 
-Todas las tablas hash del proyecto deben implementar una interfaz publica
+Todas las tablas hash del proyecto deben implementar una interfaz pública
 equivalente a:
 
 ```cpp
@@ -16,9 +16,9 @@ public:
 ```
 
 No es obligatorio usar herencia. El contrato es estructural: si una clase
-implementa esos metodos, el runner experimental debe poder utilizarla.
+implementa esos métodos, el programa experimental debe poder utilizarla.
 
-Metodos auxiliares permitidos:
+Métodos auxiliares permitidos:
 
 - `bool contains(const Key& key) const`
 - `bool get(const Key& key, TweetCount& count) const`
@@ -26,8 +26,8 @@ Metodos auxiliares permitidos:
 ## Convenciones
 
 - `size()` representa la cantidad de usuarios unicos almacenados.
-- `capacity()` representa buckets o slots disponibles, segun la estructura.
-- `memory_bytes()` es una estimacion documentada y consistente, no una medicion
+- `capacity()` representa casillas disponibles, según la estructura.
+- `memory_bytes()` es una estimación documentada y consistente, no una medición
   exacta del heap.
 - `increment(key)` inserta `key` con contador `1` si no existe, o incrementa su
   contador si ya existe.

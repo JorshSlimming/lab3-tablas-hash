@@ -1,6 +1,6 @@
 #include "tabla_hash.h"
 
-//funcion hash para clave string, suma los valores numericos de los caracteres del string y luego aplica el modulo n
+
 
 int h1(string k, int n) {
 
@@ -23,7 +23,7 @@ int quadratic_probing(string k, int n, int i) {
 }
 
 
-//la tecnica de resolucion de colisiones es la correspondiente al probing de la tabla
+
 
 int HashTable::probe(string key, int i) {
 
@@ -39,7 +39,7 @@ int HashTable::probe(string key, int i) {
 
 void HashTable::insert(string key, int value) {
 
-    // Si supera el factor de carga máximo
+
     if ((float)(elements + 1) / size > 0.60) {
         resize();
     }
@@ -57,7 +57,7 @@ void HashTable::insert(string key, int value) {
             return;
         }
 
-        // Si ya existe, actualizar
+
         if (table[index].state == OCCUPIED && table[index].key == key) {
             table[index].value = value;
             return;
@@ -70,7 +70,7 @@ void HashTable::insert(string key, int value) {
 int HashTable::get(string key) {
     for (int i = 0; i < size; i++) {
         int index = probe(key, i);
-        if (table[index].state == EMPTY) break; // ya no va a aparecer
+        if (table[index].state == EMPTY) break;
 
         if (table[index].state == OCCUPIED && table[index].key == key) {
             return table[index].value;
@@ -131,19 +131,19 @@ void HashTable::resize(){
 
     int oldSize = size;
 
-    // Nueva capacidad: siguiente primo despues de duplicar
+
     int newSize = next_prime(size * 2);
 
     vector<Entry> oldTable = table;
 
-    // Crear nueva tabla vacia
+
     table.clear();
     table.resize(newSize);
 
     size = newSize;
     elements = 0;
 
-    // Reinsertar todos los elementos
+
     for (int i = 0; i < oldSize; i++) {
 
         if (oldTable[i].state == OCCUPIED) {
@@ -157,13 +157,13 @@ size_t HashTable::memory_usage() const {
 
     size_t memoria = 0;
 
-    // tabaño del objeto hashtable en si
+
     memoria += sizeof(*this);
 
-    // memoria reservada por el vector
+
     memoria += table.capacity() * sizeof(Entry);
 
-    // memoria usada por los strings dentro de Entry
+
     for (const Entry& entrada : table) {
 
         memoria += entrada.key.capacity();

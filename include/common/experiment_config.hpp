@@ -14,4 +14,4 @@ constexpr std::uint32_t kBenchmarkRuns = 20;
 constexpr const char* kResultHeader =
     "run;key_type;structure;strategy;n_tweets;unique_users;time_us;memory_bytes;capacity";
 
-}  // namespace lab3::config
+}

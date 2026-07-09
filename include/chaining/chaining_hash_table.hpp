@@ -134,4 +134,4 @@ private:
     }
 };
 
-}  // namespace lab3
+}

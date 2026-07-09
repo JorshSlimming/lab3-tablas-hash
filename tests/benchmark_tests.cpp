@@ -7,6 +7,7 @@
 #include "benchmark/benchmark_runner.hpp"
 #include "chaining/chaining_hash_table.hpp"
 #include "closed/double_hash_table.hpp"
+#include "closed/probing_hash_table.hpp"
 #include "common/experiment_config.hpp"
 #include "stl/unordered_map_adapter.hpp"
 
@@ -75,21 +76,27 @@ void test_unique_user_count_matches_across_structures() {
         make_user_ids(lab3::config::kBenchmarkStep, 257);
 
     lab3::ChainingHashTable<lab3::UserId> chaining;
+    lab3::ProbingHashTable<lab3::UserId, lab3::ProbeStrategy::Linear> linear;
+    lab3::ProbingHashTable<lab3::UserId, lab3::ProbeStrategy::Quadratic> quadratic;
     lab3::DoubleHashTable<lab3::UserId> double_hashing;
     lab3::UnorderedMapAdapter<lab3::UserId> unordered;
 
     for (const lab3::UserId key : keys) {
         chaining.increment(key);
+        linear.increment(key);
+        quadratic.increment(key);
         double_hashing.increment(key);
         unordered.increment(key);
     }
 
     assert(chaining.size() == 257);
+    assert(linear.size() == chaining.size());
+    assert(quadratic.size() == chaining.size());
     assert(double_hashing.size() == chaining.size());
     assert(unordered.size() == chaining.size());
 }
 
-}  // namespace
+}
 
 int main() {
     test_benchmark_runner_writes_expected_csv_format();

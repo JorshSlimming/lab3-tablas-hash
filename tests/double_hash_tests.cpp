@@ -9,7 +9,7 @@
 
 namespace {
 
-// Forces all keys to hash to index 0 so probing must resolve collisions.
+
 struct CollisionHash {
     std::size_t operator()(const lab3::UserId&) const {
         return 0;
@@ -86,11 +86,11 @@ void test_double_hash_memory_bytes_nontrivial() {
     table.increment("hello");
     table.increment("world");
 
-    // With string keys, memory should include dynamic heap bytes
+
     assert(table.memory_bytes() > sizeof(table));
 }
 
-}  // namespace
+}
 
 int main() {
     test_double_hash_insert_and_increment();

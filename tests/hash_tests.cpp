@@ -102,7 +102,7 @@ void test_chaining_rehash_preserves_counts() {
     }
 }
 
-}  // namespace
+}
 
 int main() {
     test_csv_parser_handles_quotes_and_commas();

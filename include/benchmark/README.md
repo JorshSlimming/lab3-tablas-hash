@@ -1,8 +1,8 @@
-# Benchmark
+# Ejecución experimental
 
-Espacio reservado para utilidades compartidas del runner experimental.
+Este directorio contiene utilidades compartidas para ejecutar las mediciones de rendimiento.
 
-Formato CSV acordado:
+Formato del CSV de resultados:
 
 ```text
 run;key_type;structure;strategy;n_tweets;unique_users;time_us;memory_bytes;capacity

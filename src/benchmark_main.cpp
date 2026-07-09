@@ -6,6 +6,7 @@
 #include "benchmark/benchmark_runner.hpp"
 #include "chaining/chaining_hash_table.hpp"
 #include "closed/double_hash_table.hpp"
+#include "closed/probing_hash_table.hpp"
 #include "common/dataset_reader.hpp"
 #include "common/experiment_config.hpp"
 #include "stl/unordered_map_adapter.hpp"
@@ -32,6 +33,22 @@ int main(int argc, char* argv[]) {
         lab3::run_benchmark<lab3::ChainingHashTable<lab3::UserScreenName>>(
             keys.user_screen_names, "user_screen_name", "open_hash", "chaining",
             output);
+
+        lab3::run_benchmark<
+            lab3::ProbingHashTable<lab3::UserId, lab3::ProbeStrategy::Linear>>(
+            keys.user_ids, "user_id", "closed_hash", "linear_probing", output);
+        lab3::run_benchmark<lab3::ProbingHashTable<
+            lab3::UserScreenName, lab3::ProbeStrategy::Linear>>(
+            keys.user_screen_names, "user_screen_name", "closed_hash",
+            "linear_probing", output);
+
+        lab3::run_benchmark<
+            lab3::ProbingHashTable<lab3::UserId, lab3::ProbeStrategy::Quadratic>>(
+            keys.user_ids, "user_id", "closed_hash", "quadratic_probing", output);
+        lab3::run_benchmark<lab3::ProbingHashTable<
+            lab3::UserScreenName, lab3::ProbeStrategy::Quadratic>>(
+            keys.user_screen_names, "user_screen_name", "closed_hash",
+            "quadratic_probing", output);
 
         lab3::run_benchmark<lab3::DoubleHashTable<lab3::UserId>>(
             keys.user_ids, "user_id", "closed_hash", "double_hashing", output);

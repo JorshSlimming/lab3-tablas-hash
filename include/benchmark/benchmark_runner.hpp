@@ -48,4 +48,4 @@ void run_benchmark(
     }
 }
 
-}  // namespace lab3
+}

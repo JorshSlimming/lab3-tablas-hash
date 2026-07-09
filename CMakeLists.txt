@@ -55,6 +55,16 @@ set_tests_properties(unordered_map_adapter_tests PROPERTIES
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+
+add_executable(probing_hash_tests
+    tests/probing_hash_tests.cpp
+)
+target_link_libraries(probing_hash_tests PRIVATE hash_core)
+add_test(NAME probing_hash_tests COMMAND probing_hash_tests)
+set_tests_properties(probing_hash_tests PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 add_executable(benchmark_tests
     tests/benchmark_tests.cpp
 )

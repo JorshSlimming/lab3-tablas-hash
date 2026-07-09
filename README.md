@@ -1,98 +1,104 @@
-# Lab 3 - Tablas Hash
+# Laboratorio 3: Tablas hash
 
-Base del Entregable 3 para comparar tablas hash contando tweets por usuario
-en el dataset `auspol2019.csv`.
+Repositorio del Entregable 3 para comparar estructuras de tablas hash contando tweets por usuario en el dataset `auspol2019.csv`.
 
-## Decisiones tecnicas base
+## Decisiones técnicas base
 
 - Lenguaje: C++17.
 - Build system: CMake.
-- Capacidad inicial: `101` buckets/slots.
+- Capacidad inicial: `101` casillas.
 - Factor de carga maximo: `0.60`.
 - Crecimiento: `next_prime(capacity * 2)`.
 - Unidad de tiempo para benchmarks: microsegundos.
 - Hash primario para `user_id`: mezcla SplitMix64.
 - Hash primario para `user_screen_name`: FNV-1a de 64 bits.
-- Hash secundario para double hashing: variante independiente, con salto
-  calculado como `1 + (secondary_hash(key) % (capacity - 1))`.
-- CSV de resultados separado por `;`.
+- Hash secundario para double hashing: variante independiente, con salto calculado como `1 + (secondary_hash(key) % (capacity - 1))`.
+- CSV de resultados separado por punto y coma (`;`).
 
-## Estructura
+## Estructuras comparadas
+
+La experimentación principal evalúa las estructuras y estrategias solicitadas por el laboratorio:
+
+- hashing abierto por encadenamiento (`chaining`);
+- hashing cerrado con `linear_probing`;
+- hashing cerrado con `quadratic_probing`;
+- hashing cerrado con `double_hashing`;
+- `std::unordered_map` de la STL de C++.
+
+Cada configuracion se mide con las claves `user_id` y `user_screen_name`.
+
+## Estructura del repositorio
 
 ```text
 include/common/      Tipos, configuracion, hashes, lector CSV y contrato
 include/chaining/    Tabla hash con hashing abierto
-include/closed/      Espacio para hashing cerrado
-include/stl/         Espacio para adaptador std::unordered_map
-include/benchmark/   Espacio para runner experimental compartido
+include/closed/      Tablas hash con hashing cerrado
+include/stl/         Adaptador std::unordered_map
+include/benchmark/   Ejecución experimental compartida
 src/                 Implementaciones y ejecutables
 tests/               Pruebas simples con assert
 data/                Dataset pequeno de prueba
 results/             CSV de resultados
-docs/                Enunciado y organizacion
+docs/                Material de referencia para experimentación
+scripts/             Scripts de experimentacion
 ```
 
-El CSV grande `auspol2019.csv` debe estar en la raiz del repositorio para
-ejecutar benchmarks locales. **No se incluye en este repositorio** y debe
-descargarse manualmente desde Kaggle:
+El CSV grande `auspol2019.csv` debe estar en la raiz del repositorio para ejecutar benchmarks locales. **No se incluye en este repositorio** y debe descargarse manualmente desde Kaggle:
 
 - https://www.kaggle.com/datasets/taniaj/australian-election-2019-tweets?select=auspol2019.csv
 
 Una vez descargado, copiar `auspol2019.csv` a la raiz del proyecto.
 
-## Compilar
+## Compilación
 
-```powershell
+```bash
 cmake -S . -B build
 cmake --build build
 ```
 
-## Ejecutar pruebas
+## Pruebas
 
-```powershell
+```bash
 ctest --test-dir build --output-on-failure
 ```
 
-Tambien se puede ejecutar directamente:
+También se pueden ejecutar directamente los binarios de prueba generados en `build/`.
 
-```powershell
-.\build\Debug\hash_tests.exe
-```
+## Experimentación completa
 
-## Ejecutar benchmark directo
-
-El ejecutable `hash_benchmark` actual mide las tres estructuras implementadas
-en este repositorio para ambas claves:
-
-- `chaining`
-- `double_hashing`
-- `unordered_map`
-
-```powershell
-.\build\Debug\hash_benchmark.exe auspol2019.csv results\benchmark_results.csv
-```
-
-## Ejecutar benchmark completo (Rol C)
-
-El Rol C agrega double hashing, el adaptador `std::unordered_map`, y un runner
-que mide las tres estructuras en un solo CSV.
+Con `auspol2019.csv` en la raiz del repositorio:
 
 ```bash
-./scripts/run_role_c_benchmark.sh
+./scripts/run_full_benchmark.sh
 ```
 
-Requiere `auspol2019.csv` en la raiz del repositorio (no versionado).
-El script respalda resultados previos y falla claramente si falta el dataset.
+Equivalente indicando ruta explicita al dataset y archivo de salida:
 
-Formato del CSV:
+```bash
+./scripts/run_full_benchmark.sh ./auspol2019.csv results/benchmark_results.csv
+```
+
+El script compila `hash_benchmark`, ejecuta todas las configuraciones, respalda resultados previos y genera:
+
+- `results/benchmark_results.csv`: mediciones crudas.
+- `results/benchmark_summary.csv`: promedios y desviación estándar agrupados por estructura, estrategia, clave y tamaño.
+
+Formato del CSV crudo:
 
 ```text
 run;key_type;structure;strategy;n_tweets;unique_users;time_us;memory_bytes;capacity
 ```
 
-## Contrato comun
+## Ejecución directa del programa experimental
 
-Cada estructura debe exponer, como minimo:
+```bash
+./build/hash_benchmark auspol2019.csv results/benchmark_results.csv
+python3 scripts/summarize_benchmark.py results/benchmark_results.csv results/benchmark_summary.csv
+```
+
+## Interfaz común
+
+Cada estructura expone, como mínimo:
 
 ```cpp
 void increment(const Key& key);
@@ -102,6 +108,4 @@ std::size_t memory_bytes() const;
 void clear();
 ```
 
-Puede agregar metodos auxiliares como `contains` o `get(const Key&, TweetCount&)`,
-pero el runner debe poder usar todas las estructuras con la interfaz comun
-anterior.
+Se pueden agregar métodos auxiliares como `contains` o `get(const Key&, TweetCount&)`; la comparación experimental utiliza la interfaz común anterior.

@@ -7,6 +7,8 @@ out/
 .slim/deepwork/
 results/*.csv
 !results/README.md
+!results/benchmark_results.csv
+!results/benchmark_summary.csv
 auspol2019.csv
 *.exe
 *.obj

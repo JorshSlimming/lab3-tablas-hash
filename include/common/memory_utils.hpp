@@ -15,4 +15,4 @@ inline std::size_t dynamic_key_memory_bytes<std::string>(const std::string& key)
     return key.capacity() + 1;
 }
 
-}  // namespace lab3
+}

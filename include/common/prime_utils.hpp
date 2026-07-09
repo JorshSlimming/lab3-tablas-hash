@@ -36,4 +36,4 @@ inline std::size_t next_prime(std::size_t value) {
     return value;
 }
 
-}  // namespace lab3
+}
